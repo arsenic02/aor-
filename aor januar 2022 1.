@@ -1,0 +1,56 @@
+.386
+.model flat,c
+.data
+	x dw 6
+	y dw 2
+	z dw 1
+.stack 4096
+.code
+
+main proc
+	mov eax,0
+	mov ecx,0
+	mov edx,0
+	mov edi,0
+	
+	mov ax,x
+	mov cx,y
+	mov di,z
+
+	uslov:
+	cmp ax,0
+	je kraj
+	cmp cx,1
+	jbe kraj
+	dec cx
+	mul cx;x(y-1)
+	add ax,10
+	mov dx,ax;brojilac
+	mov ebx,0
+	mov bx,ax;oslobadjanje ax za sledece mnozenje
+	movsx edx,bx
+	mov ax,0;---||---
+	;mov  edi,0
+	;add cx,1
+	add di,cx;z+y-1
+	
+	mov ax,di;ax ima dx
+	push edx
+	mul di;u eax je imenilac;utice na edx,anulira ga
+	pop edx
+	mov esi,0
+	mov si,ax
+	mov ax,dx
+	div si;ovde greska
+	jmp uslov
+	nop
+
+	kraj:
+
+main endp
+end main
+
+
+
+
+	
