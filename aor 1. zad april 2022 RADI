@@ -1,0 +1,42 @@
+.386
+.model flat,c
+.data
+	
+	x dd 3
+	y dd 2
+	z dd 4
+
+.stack 4096
+.code
+main proc
+
+mov eax,x
+mov ebx,y
+mov edi,z
+mov esi,0;brojac
+uslovi:
+
+	cmp eax,ebx
+	jb kraj
+	cmp esi,100
+	ja kraj
+	mov edx,0
+	shl eax,2
+	inc ebx
+	div ebx;
+	;push eax
+
+	;izraz za x je gore
+	;izraz za y je dole
+
+	dec ebx;vracanje na staro,  na y
+	shr ebx,1
+	shr edi,2
+	add ebx,edi
+
+jmp uslovi
+
+kraj:
+nop
+main endp
+end main
