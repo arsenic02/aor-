@@ -41,7 +41,7 @@ main proc
 	mov esi,0
 	mov si,ax
 	mov ax,dx
-	div si;ovde greska
+	div si;ovde greska!!??
 	jmp uslov
 	nop
 
