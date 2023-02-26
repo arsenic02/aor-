@@ -1,0 +1,57 @@
+.386
+.model flat,c
+.data
+	n dw 6
+	suma dd 0;suma i brojilac trebaju kao 64 b???radi  bez 64b
+	brojac dw 0
+.code	
+main proc
+
+	lea eax,n;mov eax,offset n
+	mov ebx,0
+	mov bx,[eax];dobro je
+	mov esi,0
+	mov eax,0
+	mov ecx,0
+	mov edi,suma;nece sa rdi
+	
+	uslov:
+	cmp si,bx;dok brojac nije veci od n
+
+		push bx;bx se koristi za iteraciju od 0 do n
+		add si,2;posto se od 2 krece za n,na kraju petlje se smanjuje
+		mov ebx,0
+		mov bx,si
+		
+		shl si,1
+		inc si;2n+1
+		mov cx,si;2n+1
+		mov eax,0
+		mov ax,cx
+		add ax,bx;(2n+1)+n
+		mul cx;(2n+1)(3n+1)
+		mul bx; cx*n,brojilac
+
+		mov si,bx;
+		inc bx;imenilac n+1
+		mov edx,0
+		div bx
+		dec bx
+		ror bx,1
+		
+		jc minus
+		rol bx,1
+		add edi,eax
+		jmp dole
+
+		minus:
+		rol bx,1
+		sub edi,eax
+
+		dole:
+		sub si,1;brojac se vraca za 1 unazad da se ne pise jos jedna instrukcija (i++)
+		pop bx
+		jmp  uslov
+
+main endp
+end main
