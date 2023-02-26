@@ -1,0 +1,96 @@
+.386
+.model flat,c
+.data
+
+N dd 300000000
+M dd 400000000
+k db 8
+
+.code
+main proc
+
+	mov eax,N
+	mov ebx,M
+	mov esi,0;brojac jednakih bitova
+	mov ecx,0
+	mov cl,31
+	sub cl,k
+	inc cl;za 3 31-(3-1),za 8 -> 31-(8-1)
+	;push eax
+	;mov eax,1;zbog mnozenja
+	
+	;stepenovanje: ;2^k-1 je pattern za maskiranje
+		;mul
+
+	uslov:
+	cmp eax,ebx
+	ja kraj
+	;edi=ecx
+		mov edi,eax;za 3 najvisa bita
+		mov edx,eax;za 3 najniza bita
+		
+		shr edi,cl;
+		push eax
+		push ebx;
+		push ecx;ecx=edx
+		push edi
+		mov ebx,0;za brojac za stepenovanje
+		mov eax,1;zbog mnozenja
+		mov edi,2
+		mov ecx,0;ecx=edx
+		;mov bl,2
+		mov cl,k;ecx=edx
+		dec cl;	;ecx=edx			k-1 mnozenja
+		stepenovanje: ;2^k-1 je za masku
+		cmp cl,	1;ecx=edx
+			
+			je skok
+
+		
+		cmp bl,cl;	;ecx=edx		ide se do k-1 jer toliko ima mnozenja
+			ja dole
+		mul edi;nakon 3 iteracije i vrednosti eax 10000
+		inc ebx;povecanje brojaca
+		
+
+		jmp stepenovanje
+		;dec eax
+		jmp  dole;stepenovanje reseno,ali donji deo oko pop-ovanja registara nije bas
+		skok:
+		nop
+		;registar (osta)je  2
+		dole:
+		dec eax
+		
+		mov bl,al
+		
+		pop edi
+		;ecx=edx
+		pop ebx
+		;pop eax
+
+		;mov al,cl
+		;mul bl;??????????????????????????????????
+		;push ecx;u ecx je vec k
+		;mov ecx,0
+		;mov cl,k
+		;shl ecx,1
+		;inc ecx;tu je maska k*2+1
+		pop ecx;
+
+		and edx,ecx;
+		;mov ecx,0
+
+		cmp edi,edx
+		jne skok1
+			inc esi
+
+		skok1:
+		inc eax
+		;pop ecx;ebx
+		jmp uslov
+
+kraj:
+nop
+main endp
+end main
