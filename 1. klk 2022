@@ -1,0 +1,56 @@
+.386
+.model flat,c
+.data
+
+a db 2
+b db 3
+
+.code
+main proc
+
+	mov al,a
+	lea eax,a
+	movzx eax,byte ptr[eax]
+	push eax
+	mov bl,b
+	lea ebx,b
+	movzx ebx,byte ptr[ebx]
+	;push ebx
+	mov ecx,0;i
+	mov esi,0;s
+	mov edi,eax;koristice se u uslovu i>a
+	mul ebx; a*b
+	mul eax; (a*b)^2
+	mov edx,eax
+	push  edi;cuva se edi za uslov i>a
+	dec edi;ovde se edi koristi za s+=[(a-1)*b]/2,konkretno a-1
+	;pop ebx
+	mov eax,ebx
+	push edx
+	mul edi;a*b
+	mul eax;edi^2
+	pop edx;vodi racuna o redosledu skidanja sa steka
+	pop edi
+	
+	uslovi:
+	cmp ecx,100
+	ja kraj
+	cmp esi,edx
+	ja  kraj
+
+		inc ecx
+		cmp ecx,edi;i>a
+		jna jok	
+			add esi,edi
+			jmp dole
+		jok:
+		
+		add esi,eax;
+	
+	dole:
+	jmp uslovi
+	kraj:
+	nop
+
+main endp
+end main
