@@ -1,0 +1,42 @@
+.386
+.model flat, c
+.data
+	x dd 20
+	n dd 10
+	k dd 1
+	p db 3
+	rez dd 0
+.stack 4096
+.code
+main proc
+	mov cl,p
+	mov esi, 1
+	shl esi, cl
+	dec esi; u esi je maska kojom se sredjuje nizih p bitova
+	mov cl, 32
+	sub cl, p
+	mov edi, esi
+	shl edi, cl; u edi je maska kojom se maskira visih p bitova
+	mov ecx, k;broji od 1 do n
+	petlja:
+	cmp ecx,n
+	ja kraj
+		mov eax,x
+		mov ebx,x
+		push ecx
+		and ecx,esi;k v
+		add eax,ecx;brojilac
+		pop ecx;potrebno je k za drugo maskiranje
+		push ecx; cuvanje brojaca
+		and ecx,edi; k^
+		sub ebx,ecx;imenilac
+		mov edx,0
+		div ebx;integer overflow wtf???
+		add rez,eax;smestanje sume
+		pop ecx
+		inc ecx
+	jmp petlja
+kraj:
+nop
+main endp
+end main
