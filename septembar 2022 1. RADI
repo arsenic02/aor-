@@ -55,3 +55,43 @@ main proc
 
 main endp
 end main
+------------------------------------------------------------------------------------------------
+;2. nacin kraci
+.386 
+.model flat, c
+.data
+	n dw 5
+	suma dd 0
+.code
+	main proc
+		mov ecx,0
+		mov cx,2
+		uslov:
+		cmp cx,n
+		ja kraj
+			mov ax,cx
+			mov bx,cx
+			shl bx,1; 2n
+			inc bx;2n+1
+			mul bx;n(2n+1)
+			add bx,cx; (2n+1)+n
+			mul bx; brojilac
+			mov bx,cx;n
+			inc bx;n+1
+			;mov edx,0
+			div bx;ceo izraz
+			ror cx,1
+			jc minus
+			rol cx,1
+			add suma,ecx
+			jmp dalje
+			minus:
+			rol cx,1
+			sub suma,ecx
+			dalje:
+			inc cx
+		jmp uslov
+		kraj:
+		nop
+	main endp
+	end main
