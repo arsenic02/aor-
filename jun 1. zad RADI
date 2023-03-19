@@ -31,8 +31,8 @@ main proc
 		and ecx,edi; k^
 		sub ebx,ecx;imenilac
 		mov edx,0
-		div ebx;integer overflow wtf???
-		add rez,eax;smestanje sume
+		div ebx
+		add rez,eax
 		pop ecx
 		inc ecx
 	jmp petlja
