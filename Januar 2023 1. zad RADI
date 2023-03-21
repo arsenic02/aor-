@@ -1,0 +1,44 @@
+.386
+.model flat,c
+.data
+	x dd 20
+	n dw 10
+	p db 3
+	k dw 4
+	rez dd 0
+.code
+main proc
+	mov cl,p
+	mov esi, 1
+	shl esi, cl
+	dec esi; u esi je maska kojom se sredjuje nizih p bitova
+	
+	mov cl, 32
+	sub cl, p
+	mov edi, esi
+	shl edi, cl; u edi je maska kojom se komplementira visih p bitova
+	movzx ecx, k; broji od 1 do n
+	petlja:
+	cmp cx,n
+	ja kraj
+		mov eax,x
+		mov ebx,x
+		push ecx
+		and ecx,esi;k v
+		shl ecx,1;  dodatak u odnosu na jun2
+		sub eax,ecx;brojilac
+		pop ecx;  potrebno je k za drugo maskiranje
+		push ecx; cuvanje brojaca
+		xor ecx,edi; k^ dodatak u odnosu  na jun2
+		shl ecx,1;  dodatak u odnosu na  jun2
+		add ebx,ecx;  imenilac
+		mov edx,0
+		div ebx
+		add rez,eax
+		pop ecx
+		inc ecx
+	jmp petlja
+kraj:
+nop
+main endp
+end main
